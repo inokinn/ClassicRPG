@@ -1,5 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
 
 public class Player : IBattler
 {
@@ -94,6 +95,21 @@ public class Player : IBattler
     public int Luc
     {
         get => _luc;
+    }
+    // コマンドリスト
+    private List<Command> _commands;
+    public List<Command> Commands
+    {
+        get
+        {
+            Attack attack = ScriptableObject.CreateInstance<Attack>();
+            string fullPath = AssetDatabase.GenerateUniqueAssetPath($"Assets/Resources/ScriptableObjects/Commands/Attack.asset");
+            AssetDatabase.CreateAsset(attack, fullPath);
+            AssetDatabase.Refresh();
+            return new List<Command>(new Command[] {
+                attack,
+            });
+        }
     }
 
     public void SelectCommand()

@@ -51,11 +51,12 @@ public class CombatPresenter : MonoBehaviour
         while (_phase != CombatPhase.End)
         {
             yield return null;
-            Debug.Log(_phase);
+            //Debug.Log(_phase);
             switch (_phase)
             {
                 case CombatPhase.Start:
                     // 敵が現れたことを知らせる
+                    Debug.Log($"{_enemy.Name}があらわれた！");
                     _phase = CombatPhase.CheckInitiative;
                     break;
                 case CombatPhase.CheckInitiative:
@@ -71,6 +72,7 @@ public class CombatPresenter : MonoBehaviour
                     // TODO: コマンド選択させる or 敵の行動を決定
                     if (_sortedBattlers.ToList()[initiative] == _player)
                     {
+                        Debug.Log("コマンド？");
                         yield return new WaitUntil(() => Input.GetButtonDown("Submit"));
                     }
                     _phase = CombatPhase.Execute;
@@ -80,13 +82,11 @@ public class CombatPresenter : MonoBehaviour
                     IBattler battler = _sortedBattlers.ToList()[initiative];
                     if (battler.Name == "ヨシヒコ")
                     {
-                        _enemy.CurrentHp -= _player.Str;
-                        Debug.Log($"{_player.Name}の攻撃！{_enemy.Name}に{_player.Str}のダメージ。残りHPは{_enemy.CurrentHp}");
+                        battler.Commands[0].Execute(battler, _enemy);
                     }
                     else if (battler.Name == "スライム")
                     {
-                        _player.CurrentHp -= _enemy.Str;
-                        Debug.Log($"{_enemy.Name}の攻撃！{_player.Name}に{_enemy.Str}のダメージ。残りHPは{_player.CurrentHp}");
+                        battler.Commands[0].Execute(battler, _player);
                     }
                     _phase = CombatPhase.Judge;
 
@@ -98,7 +98,6 @@ public class CombatPresenter : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log($"現在のInitiativeは{initiative + 1},最大値は{_sortedBattlers.ToList().Count}");
                         if (initiative + 1 == _sortedBattlers.ToList().Count)
                         {
                             initiative = 0;
@@ -113,6 +112,7 @@ public class CombatPresenter : MonoBehaviour
                     break;
                 case CombatPhase.Result:
                     // TODO: 敵が全滅していたら勝利、味方が全滅していたら敗北
+                    Debug.Log($"戦闘に勝利した！");
                     _phase = CombatPhase.End;
                     break;
                 default:

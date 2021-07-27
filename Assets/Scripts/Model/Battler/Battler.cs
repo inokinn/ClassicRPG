@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 
 public enum BattlerRaceType
 {
@@ -40,6 +41,8 @@ public interface IBattler
     int Mgc { get; }
     // 運
     int Luc { get; }
+    // コマンドリスト
+    List<Command> Commands { get; }
 
     // 行動選択
     public void SelectCommand();
