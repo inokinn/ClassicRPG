@@ -2,7 +2,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class Player : IBattler
+public interface IPlayer : IBattler
+{
+    // 肩書き
+    string Title { get; }
+    // 顔ID
+    int FaceId { get; }
+    // レベル
+    int Level { get; }
+}
+
+public class Player : IPlayer
 {
     // 名前
     private string _name;
@@ -100,16 +110,7 @@ public class Player : IBattler
     private List<Command> _commands;
     public List<Command> Commands
     {
-        get
-        {
-            Attack attack = ScriptableObject.CreateInstance<Attack>();
-            string fullPath = AssetDatabase.GenerateUniqueAssetPath($"Assets/Resources/ScriptableObjects/Commands/Attack.asset");
-            AssetDatabase.CreateAsset(attack, fullPath);
-            AssetDatabase.Refresh();
-            return new List<Command>(new Command[] {
-                attack,
-            });
-        }
+        get => _commands;
     }
 
     public void SelectCommand()
@@ -133,5 +134,19 @@ public class Player : IBattler
         _spd = 8;
         _mgc = 4;
         _luc = 3;
+
+        this.GenerateCommands();
+    }
+
+    /// <summary>
+    /// コマンドの生成
+    /// </summary>
+    private void GenerateCommands()
+    {
+        Command attack = Resources.Load<Attack>("ScriptableObjects/Commands/Attack");
+        _commands = new List<Command>(new Command[] {
+                                        // 通常攻撃
+                                        attack,
+                                    });
     }
 }

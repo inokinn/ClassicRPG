@@ -15,14 +15,8 @@ public interface IBattler
 {
     // 名前
     string Name { get; }
-    // 肩書き
-    string Title { get; }
-    // 顔ID
-    int FaceId { get; }
     // 種族
     BattlerRaceType RaceType { get; }
-    // レベル
-    int Level { get; }
     // 最大HP
     int MaxHp { get; }
     // 現在のHP
@@ -45,5 +39,5 @@ public interface IBattler
     List<Command> Commands { get; }
 
     // 行動選択
-    public void SelectCommand();
+    void SelectCommand();
 }
