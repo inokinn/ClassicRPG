@@ -1,9 +1,20 @@
 using UnityEngine;
 
+public interface ICommand
+{
+    // 名前
+    string Name { get; }
+    // 消費MP
+    int MpCost { get; }
+
+    // 実行
+    void Execute(IBattler user, IBattler target);
+}
+
 /// <summary>
 /// バトルコマンドの基底クラス
 /// </summary>
-public abstract class Command : ScriptableObject
+public abstract class Command : ScriptableObject, ICommand
 {
     // 名前
     [SerializeField] private string _name;
@@ -13,8 +24,8 @@ public abstract class Command : ScriptableObject
     }
 
     // 消費MP
-    [SerializeField] private string _mpCost;
-    public string MpCost
+    [SerializeField] private int _mpCost;
+    public int MpCost
     {
         get => _mpCost;
     }

@@ -2,7 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class Enemy : IBattler
+public interface IEnemy : IBattler
+{
+
+}
+
+public class Enemy : IEnemy
 {
     // 名前
     private string _name;
@@ -100,16 +105,7 @@ public class Enemy : IBattler
     private List<Command> _commands;
     public List<Command> Commands
     {
-        get
-        {
-            Attack attack = ScriptableObject.CreateInstance<Attack>();
-            string fullPath = AssetDatabase.GenerateUniqueAssetPath($"Assets/Resources/ScriptableObjects/Commands/Attack.asset");
-            AssetDatabase.CreateAsset(attack, fullPath);
-            AssetDatabase.Refresh();
-            return new List<Command>(new Command[] {
-                attack,
-            });
-        }
+        get => _commands;
     }
 
     public void SelectCommand()
@@ -120,10 +116,7 @@ public class Enemy : IBattler
     public void Temp()
     {
         _name = "スライム";
-        _title = "スライム";
-        _faceId = 1;
         _raceType = BattlerRaceType.Enemy;
-        _level = 1;
         _maxHp = 12;
         _currentHp = 12;
         _maxMp = 1;
@@ -133,5 +126,18 @@ public class Enemy : IBattler
         _spd = 3;
         _mgc = 0;
         _luc = 1;
+
+        this.GenerateCommands();
+    }
+
+    /// <summary>
+    /// コマンドの生成
+    /// </summary>
+    private void GenerateCommands()
+    {
+        Command attack = Resources.Load<Attack>("ScriptableObjects/Commands/Attack");
+        _commands = new List<Command>(new Command[] {
+                                        attack,
+                                    });
     }
 }
