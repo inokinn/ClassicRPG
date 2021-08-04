@@ -35,8 +35,11 @@ public interface IBattler
     int Mgc { get; }
     // 運
     int Luc { get; }
+
     // コマンドリスト
     List<Command> Commands { get; }
+    // ターゲット
+    List<IBattler> Targets { get; set; }
 
     // 行動選択
     void SelectCommand();
