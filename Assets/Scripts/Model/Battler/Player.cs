@@ -112,6 +112,13 @@ public class Player : IPlayer
     {
         get => _commands;
     }
+    // ターゲット
+    private List<IBattler> _targets;
+    public List<IBattler> Targets
+    {
+        get => _targets;
+        set { _targets = value; }
+    }
 
     public void SelectCommand()
     {
