@@ -10,13 +10,42 @@ public class CombatPresenter : MonoBehaviour, ICombatContext
     // 戦闘開始フェーズ
     [Inject] private ICombatPhaseStart _combatPhaseStart;
 
+    // メインコマンドウィンドウ
+    [SerializeField] private GameObject _mainCommandWindow;
+    // サブコマンドウィンドウ
+    [SerializeField] private GameObject _subCommandWindow;
+
     // 戦闘コマンドに対応したボタン
-    [SerializeField] private Button AttackCommandButton;    // 攻撃ボタン
-    [SerializeField] private Button MagicCommandButton;     // 魔法ボタン
-    [SerializeField] private Button SkillCommandButton;     // スキルボタン
-    [SerializeField] private Button ItemCommandButton;      // アイテムボタン
-    [SerializeField] private Button GuardCommandButton;   // 防御ボタン
-    [SerializeField] private Button EscapeCommandButton;    // 逃げるボタン
+    [SerializeField] private Button _attackCommandButton;    // 攻撃ボタン
+    public Button AttackCommandButton
+    {
+        get => _attackCommandButton;
+    }
+    [SerializeField] private Button _magicCommandButton;     // 魔法ボタン
+    public Button MagicCommandButton
+    {
+        get => _magicCommandButton;
+    }
+    [SerializeField] private Button _skillCommandButton;     // スキルボタン
+    public Button SkillCommandButton
+    {
+        get => _skillCommandButton;
+    }
+    [SerializeField] private Button _itemCommandButton;      // アイテムボタン
+    public Button ItemCommandButton
+    {
+        get => _itemCommandButton;
+    }
+    [SerializeField] private Button _guardCommandButton;     // 防御ボタン
+    public Button GuardCommandButton
+    {
+        get => _guardCommandButton;
+    }
+    [SerializeField] private Button _escapeCommandButton;    // 逃げるボタン
+    public Button EscapeCommandButton
+    {
+        get => _escapeCommandButton;
+    }
 
     // 現在のフェーズ
     private ICombatPhase _currentPhase;
@@ -65,7 +94,11 @@ public class CombatPresenter : MonoBehaviour, ICombatContext
         _enemy = new Enemy();
         _enemy.Temp();
 
-        //_phase = CombatPhase.Start;
+        // コマンドウィンドウを一旦非アクティブに
+        ShowMainCommandWindow(false);
+        ShowSubCommandWindow(false);
+
+        // イニシアチブとフェーズをリセット
         _initiative = 0;
         _currentPhase = _combatPhaseStart;
         StartCoroutine(CombatCoroutine());
@@ -86,6 +119,9 @@ public class CombatPresenter : MonoBehaviour, ICombatContext
         _currentPhase = nextPhase;
     }
 
+    /// <summary>
+    /// イニシアチブをチェックし戦闘参加者をソート
+    /// </summary>
     public void SetInitiatibeAndSort()
     {
         // TODO: イニシアチブ順ソート
@@ -94,6 +130,24 @@ public class CombatPresenter : MonoBehaviour, ICombatContext
             _player,
         });
         _sortedBattlers = battlers.OrderByDescending(battler => battler.Spd);
+    }
+
+    /// <summary>
+    /// メインコマンドウィンドウの表示/非表示を切り替え
+    /// </summary>
+    /// <param name="isActive"></param>
+    public void ShowMainCommandWindow(bool isActive)
+    {
+        _mainCommandWindow.SetActive(isActive);
+    }
+
+    /// <summary>
+    /// サブコマンドウィンドウの表示/非表示を切り替え
+    /// </summary>
+    /// <param name="isActive"></param>
+    public void ShowSubCommandWindow(bool isActive)
+    {
+        _subCommandWindow.SetActive(isActive);
     }
 
     /// <summary>

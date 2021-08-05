@@ -11,6 +11,7 @@ public class CombatInstaller : MonoInstaller
         Container.Bind<ICombatPhaseStart>().To<CombatPhaseStart>().AsSingle();
         Container.Bind<ICombatPhaseCheckInitiative>().To<CombatPhaseCheckInitiative>().AsSingle();
         Container.Bind<ICombatPhaseSelectCommand>().To<CombatPhaseSelectCommand>().AsSingle();
+        Container.Bind<ICombatPhaseSelectSpellCommand>().To<CombatPhaseSelectSpellCommand>().AsSingle();
         Container.Bind<ICombatPhaseExecute>().To<CombatPhaseExecute>().AsSingle();
         Container.Bind<ICombatPhaseJudge>().To<CombatPhaseJudge>().AsSingle();
         Container.Bind<ICombatPhaseResult>().To<CombatPhaseResult>().AsSingle();
